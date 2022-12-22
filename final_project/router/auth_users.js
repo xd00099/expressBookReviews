@@ -58,21 +58,22 @@ regd_users.post("/login", (req,res) => {
 regd_users.put("/auth/review/:isbn", (req, res) => {
     //Write your code here
 	let Id = req.params.isbn;
-    let user = req.user
+    let user = req.body.username
 	
     books[Id].reviews[user] = req.query.review
-	return res.status(200).json({ message: "Review added/modified correctly" });
+    
+	return res.status(200).json(books[Id])
 });
 
 regd_users.delete("/auth/review/:isbn", (req, res) => {
     let Id = req.params.isbn;
-    let user = req.user
+    let user = req.body.username
 
     if (books[Id].reviews[user]) {
         delete books[Id].reviews[user]
         return res.status(200).json({ message: "Review deleted successfully."})
     } else {
-        return status(400).json({ message: "No reviews found for the user."})
+        return res.status(400).json({ message: "No reviews found for the user."})
     }
     
 });
